@@ -3,28 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Udit Choudhary | Bioinformatics & Data Science</title>
+    <title>Udit Choudhary | Bioinformatics Developer & Data Scientist</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        navy: {
-                            800: '#1e3a8a', // Deep blue
-                            900: '#102C57', // Very dark blue/navy
+                        dark: {
+                            900: '#0a0f1c', // Deepest background
+                            800: '#111827', // Card background
+                            700: '#1f2937', // Borders / subtle backgrounds
                         },
-                        slate: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
+                        accent: {
+                            teal: '#2dd4bf',
+                            cyan: '#22d3ee',
+                            purple: '#a855f7'
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
                         }
                     }
                 }
@@ -32,7 +46,44 @@
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0a0f1c; 
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Delay utility for staggered animations */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(10, 15, 28, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Timeline styling */
         .timeline-dot::before {
             content: '';
             position: absolute;
@@ -41,179 +92,230 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background-color: #102C57;
-            border: 3px solid #f1f5f9;
+            background-color: #0a0f1c;
+            border: 3px solid #2dd4bf;
+            box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover .timeline-dot::before {
+            background-color: #2dd4bf;
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0f1c; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-navy-900 selection:text-white">
+<body class="antialiased selection:bg-accent-teal selection:text-dark-900">
 
     <!-- Sticky Navigation -->
-    <nav class="fixed w-full z-50 top-0 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+    <nav class="fixed w-full z-50 top-0 glass-nav transition-all duration-300">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-bold text-xl text-navy-900 tracking-tight hover:text-navy-800 transition-colors">UC.</a>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center relative z-10">
+                    <a href="#" class="font-extrabold text-2xl tracking-tighter bg-gradient-to-r from-accent-teal via-accent-cyan to-accent-purple bg-clip-text text-transparent">
+                        UC.
+                    </a>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#about" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors">About</a>
-                    <a href="#skills" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors">Skills</a>
-                    <a href="#experience" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors">Experience</a>
-                    <a href="#publications" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors">Publications</a>
-                    <a href="#education" class="text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors">Education</a>
+                <div class="hidden md:flex space-x-8 relative z-10">
+                    <a href="#about" class="text-sm font-medium text-slate-300 hover:text-accent-teal transition-colors">About</a>
+                    <a href="#skills" class="text-sm font-medium text-slate-300 hover:text-accent-teal transition-colors">Expertise</a>
+                    <a href="#experience" class="text-sm font-medium text-slate-300 hover:text-accent-cyan transition-colors">Experience</a>
+                    <a href="#publications" class="text-sm font-medium text-slate-300 hover:text-accent-purple transition-colors">Publications</a>
+                    <a href="#education" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Education</a>
                 </div>
-                <!-- Mobile menu button (Simplified for CSS only focus) -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-navy-900 focus:outline-none">
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center relative z-10">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-navy-900 hover:bg-slate-50">About</a>
-                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-navy-900 hover:bg-slate-50">Skills</a>
-                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-navy-900 hover:bg-slate-50">Experience</a>
-                <a href="#publications" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-navy-900 hover:bg-slate-50">Publications</a>
-                <a href="#education" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-navy-900 hover:bg-slate-50">Education</a>
+        <div id="mobile-menu" class="hidden md:hidden glass-nav border-t border-slate-800 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2 sm:px-6">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-accent-teal hover:bg-white/5">About</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-accent-teal hover:bg-white/5">Expertise</a>
+                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-accent-cyan hover:bg-white/5">Experience</a>
+                <a href="#publications" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-accent-purple hover:bg-white/5">Publications</a>
+                <a href="#education" class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-white/5">Education</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 md:pt-48 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col items-start">
-        <span class="text-navy-800 font-semibold tracking-wide uppercase text-sm mb-4">Portfolio & Curriculum Vitae</span>
-        <h1 class="text-5xl md:text-7xl font-extrabold text-navy-900 tracking-tight leading-tight mb-6">
-            Udit Choudhary
-        </h1>
-        <h2 class="text-2xl md:text-3xl font-medium text-slate-600 mb-8 max-w-3xl">
-            Bioinformatics Developer & Senior Data Scientist <br class="hidden md:block">
-            <span class="text-slate-400 text-xl md:text-2xl">| 7+ Years Experience</span>
-        </h2>
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Canvas Background -->
+        <canvas id="particle-canvas"></canvas>
         
-        <div class="flex flex-wrap gap-4 text-slate-600">
-            <a href="mailto:choudhary.udit@outlook.com" class="flex items-center gap-2 hover:text-navy-900 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                choudhary.udit@outlook.com
-            </a>
-            <span class="hidden md:inline text-slate-300">|</span>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                (443) 707-5560
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark-900/50 to-dark-900 z-0"></div>
+
+        <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-start reveal">
+            <div class="inline-flex items-center px-3 py-1 rounded-full border border-accent-teal/30 bg-accent-teal/10 text-accent-teal text-xs font-semibold tracking-widest uppercase mb-6">
+                <span class="w-2 h-2 rounded-full bg-accent-teal mr-2 animate-pulse"></span> Portfolio & CV
             </div>
-            <span class="hidden md:inline text-slate-300">|</span>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                Boston, MA
+            
+            <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-tight mb-6 text-white">
+                Udit Choudhary
+            </h1>
+            
+            <h2 class="text-2xl md:text-4xl font-medium text-slate-400 mb-8 max-w-3xl leading-snug">
+                <span class="bg-gradient-to-r from-accent-teal to-accent-cyan bg-clip-text text-transparent font-bold">Bioinformatics Developer & Data Scientist</span> <br class="hidden md:block">
+                <span class="text-slate-500 text-xl md:text-2xl font-light tracking-wide mt-2 block">7+ Years of Industry Experience</span>
+            </h2>
+            
+            <!-- Contact Badges -->
+            <div class="flex flex-wrap gap-4 text-sm font-medium">
+                <a href="mailto:choudhary.udit@outlook.com" class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-accent-teal/50 transition-all text-slate-300 hover:text-white">
+                    <svg class="w-4 h-4 text-accent-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    choudhary.udit@outlook.com
+                </a>
+                <span class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 text-slate-300">
+                    <svg class="w-4 h-4 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Boston, MA
+                </span>
+                <a href="https://linkedin.com/in/udit-choudhary" target="_blank" class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-accent-purple/50 transition-all text-slate-300 hover:text-white">
+                    <svg class="w-4 h-4 text-accent-purple" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    linkedin.com/in/udit-choudhary
+                </a>
+                <a href="https://github.com/udcruze24" target="_blank" class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-slate-400 transition-all text-slate-300 hover:text-white">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    github.com/udcruze24
+                </a>
             </div>
-            <span class="hidden md:inline text-slate-300">|</span>
-            <a href="https://github.com/udcruze24" target="_blank" class="flex items-center gap-2 hover:text-navy-900 transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
-                github.com/udcruze24
-            </a>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-white border-y border-slate-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-navy-900 mb-8 flex items-center">
-                <span class="w-8 h-1 bg-navy-900 mr-4 rounded-full"></span> About Me
+    <section id="about" class="py-24 border-t border-white/5 relative">
+        <!-- Subtle background glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-accent-teal/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center">
+                <span class="w-12 h-1 bg-gradient-to-r from-accent-teal to-accent-cyan mr-6 rounded-full"></span> 
+                About Me
             </h2>
-            <p class="text-lg text-slate-700 leading-relaxed max-w-4xl">
-                Bioinformatics Developer and Senior Data Scientist with 7+ years of experience architecting production-grade transcriptomics pipelines, high-dimensional single-cell atlases, and spatial omics workflows for biopharma therapeutic discovery. 
-                <br><br>
-                Expert in integrating spatial transcriptomics (10x Visium), multiplexed proteomics, and multi-omics data (scRNA-seq, ATAC-seq) with deep learning and scalable workflow orchestrators (Nextflow, Snakemake) across AWS and SLURM HPC infrastructure. 
-                <br><br>
-                Advanced practitioner of <strong>agentic coding and AI-augmented software engineering</strong>, utilizing autonomous coding agents, LLM-driven development workflows, and automated scaffolding to accelerate pipeline delivery, unit testing, and complex biological data analysis.
-            </p>
+            <div class="glass-panel p-8 md:p-10 rounded-3xl text-lg text-slate-300 leading-relaxed shadow-2xl relative overflow-hidden group">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-accent-purple/20 blur-[80px] rounded-full group-hover:bg-accent-cyan/20 transition-colors duration-700"></div>
+                <p class="relative z-10">
+                    Bioinformatics Developer and Data Scientist with <strong class="text-white">7+ years of experience</strong> architecting production-grade transcriptomics pipelines, high-dimensional single-cell atlases, and spatial omics workflows for biopharma therapeutic portfolio programs. 
+                </p>
+                <p class="mt-6 relative z-10">
+                    Expert in integrating spatial transcriptomics (10x Visium), multiplexed proteomics, and multi-omics data (scRNA-seq, ATAC-seq) with deep learning and reproducible workflow engines (<span class="text-accent-cyan">Nextflow, Snakemake</span>) across AWS and SLURM HPC infrastructure. 
+                </p>
+                <p class="mt-6 relative z-10">
+                    Advanced practitioner of <strong class="text-accent-teal">agentic coding and AI-augmented software engineering</strong>, utilizing autonomous coding agents, LLM-driven development workflows, and automated scaffolding to accelerate pipeline delivery, unit testing, and complex biological data analysis.
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-slate-50">
+    <section id="skills" class="py-24 relative">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-navy-900 mb-12 flex items-center">
-                <span class="w-8 h-1 bg-navy-900 mr-4 rounded-full"></span> Technical Skills
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 flex items-center reveal">
+                <span class="w-12 h-1 bg-gradient-to-r from-accent-cyan to-accent-purple mr-6 rounded-full"></span> 
+                Technical Expertise
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Skill Category 1 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Spatial & Single-Cell Omics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skill 1 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal">
+                    <div class="w-12 h-12 rounded-xl bg-accent-teal/10 flex items-center justify-center mb-6 border border-accent-teal/20 group-hover:bg-accent-teal/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-teal transition-colors">Spatial & Single-Cell Omics</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Spatial Transcriptomics (10x Visium)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Multiplexed Proteomics</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">scRNA-seq / snRNA-seq</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">ATAC-seq / CITE-seq / ChIP-seq</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Single-Cell Atlas Construction</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Cell-Type Deconvolution</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Scanpy / Seurat</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Spatial Transcriptomics (Visium)</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Multiplexed Proteomics</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">scRNA/snRNA-seq</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">ATAC-seq / CITE-seq</span>
                     </div>
                 </div>
 
-                <!-- Skill Category 2 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Pipeline Engineering</h3>
+                <!-- Skill 2 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal delay-100">
+                    <div class="w-12 h-12 rounded-xl bg-accent-cyan/10 flex items-center justify-center mb-6 border border-accent-cyan/20 group-hover:bg-accent-cyan/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-cyan transition-colors">Pipeline Engineering</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Nextflow</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Snakemake</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">NGS Workflows</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Differential Expression (DESeq2, limma)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Biopython</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Kallisto</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Nextflow</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Snakemake</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Reproducible Workflows</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Differential Expression</span>
                     </div>
                 </div>
 
-                <!-- Skill Category 3 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Machine Learning & Deep Learning</h3>
+                <!-- Skill 3 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal delay-200">
+                    <div class="w-12 h-12 rounded-xl bg-accent-purple/10 flex items-center justify-center mb-6 border border-accent-purple/20 group-hover:bg-accent-purple/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-purple transition-colors">Machine & Deep Learning</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">PyTorch</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">TensorFlow / Keras</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Generative Models (GANs, WGAN-GP, VAEs)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Transformers</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Protein Language Models</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">XGBoost / LightGBM</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Spatial Feature Extraction</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">PyTorch / TensorFlow</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">GANs / VAEs</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Transformers / LLMs</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Spatial Feature Extraction</span>
                     </div>
                 </div>
 
-                <!-- Skill Category 4 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Agentic Coding & Software Engineering</h3>
+                <!-- Skill 4 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal">
+                    <div class="w-12 h-12 rounded-xl bg-accent-teal/10 flex items-center justify-center mb-6 border border-accent-teal/20 group-hover:bg-accent-teal/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-teal transition-colors">Agentic & Software Eng.</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 border border-blue-200 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white hover:border-navy-900 transition-colors cursor-default">Autonomous AI Coding Agents</span>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 border border-blue-200 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white hover:border-navy-900 transition-colors cursor-default">LLM CLI Workflows</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Automated Test Scaffolding (pytest)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Test-Driven Development (TDD)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Docker & Kubernetes</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">CI/CD & Git</span>
+                        <span class="px-3 py-1 bg-accent-teal/10 text-accent-teal border border-accent-teal/30 rounded-md text-sm font-medium">Agentic Coding</span>
+                        <span class="px-3 py-1 bg-accent-teal/10 text-accent-teal border border-accent-teal/30 rounded-md text-sm font-medium">AI-Augmented Dev</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">TDD & Scaffolding</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Docker / K8s</span>
                     </div>
                 </div>
 
-                <!-- Skill Category 5 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Cloud & HPC</h3>
+                <!-- Skill 5 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal delay-100">
+                    <div class="w-12 h-12 rounded-xl bg-accent-cyan/10 flex items-center justify-center mb-6 border border-accent-cyan/20 group-hover:bg-accent-cyan/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-cyan transition-colors">Cloud & HPC</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">AWS (S3, EC2, SageMaker, Batch)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">SLURM Workload Manager</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Azure</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Bash/Shell Scripting</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">AWS (S3, EC2, Batch)</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">SLURM Workload</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Azure</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Bash/Shell Scripting</span>
                     </div>
                 </div>
 
-                <!-- Skill Category 6 -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                    <h3 class="text-xl font-semibold text-navy-800 mb-4">Biostatistics</h3>
+                <!-- Skill 6 -->
+                <div class="glass-panel p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300 group reveal delay-200">
+                    <div class="w-12 h-12 rounded-xl bg-accent-purple/10 flex items-center justify-center mb-6 border border-accent-purple/20 group-hover:bg-accent-purple/20 transition-colors">
+                        <svg class="w-6 h-6 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent-purple transition-colors">Biostatistics</h3>
                     <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Bayesian Statistics</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Survival Analysis</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">Time-Series (ARIMA, Prophet)</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">A/B Testing</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium hover:bg-navy-900 hover:text-white transition-colors cursor-default">MLE & Longitudinal Modeling</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Bayesian Statistics</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Time-Series (ARIMA)</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">Experimental Design</span>
+                        <span class="px-3 py-1 bg-dark-700/50 text-slate-300 border border-slate-700 rounded-md text-sm">A/B Testing</span>
                     </div>
                 </div>
             </div>
@@ -221,166 +323,256 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-20 bg-white border-y border-slate-100">
+    <section id="experience" class="py-24 border-y border-white/5 relative bg-dark-800/30">
+        <!-- Subtle background glow -->
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-cyan/5 blur-[120px] rounded-full pointer-events-none"></div>
+
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-navy-900 mb-12 flex items-center">
-                <span class="w-8 h-1 bg-navy-900 mr-4 rounded-full"></span> Professional Experience
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 flex items-center reveal">
+                <span class="w-12 h-1 bg-gradient-to-r from-accent-purple to-accent-teal mr-6 rounded-full"></span> 
+                Experience
             </h2>
 
-            <div class="border-l-2 border-slate-200 ml-4 md:ml-6 space-y-12">
+            <div class="border-l border-slate-700 ml-4 md:ml-6 space-y-16">
                 
                 <!-- Experience 1 -->
-                <div class="relative pl-8 md:pl-10 timeline-dot">
+                <div class="relative pl-10 md:pl-12 timeline-item reveal">
+                    <div class="timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                        <h3 class="text-2xl font-bold text-navy-900">Data Scientist (Bioinformatics & Computational Biology)</h3>
-                        <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">April 2021 – Present</span>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-accent-teal transition-colors">Data Scientist <span class="text-lg text-slate-400 font-medium">(Bioinformatics & Comp Bio)</span></h3>
+                        <span class="text-sm font-semibold text-accent-teal bg-accent-teal/10 border border-accent-teal/20 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">April 2021 – Present</span>
                     </div>
-                    <p class="text-lg font-medium text-slate-600 mb-4">Boehringer Ingelheim <span class="font-normal text-sm text-slate-400">| Ridgefield, CT (Remote)</span></p>
-                    <ul class="list-disc list-inside text-slate-700 space-y-2 marker:text-navy-800">
-                        <li><strong>Spatial Biology & Deep Learning Pipelines:</strong> Architected and deployed PyTorch image analysis, spatial transcriptomics (10x Visium), and multiplexed spatial proteomics pipelines for high-resolution phenotypic feature extraction.</li>
-                        <li><strong>Single-Cell Atlas Construction:</strong> Built and curated harmonized scRNA-seq and multi-omics single-cell atlases utilizing high-dimensional clustering and latent space representations to resolve disease pathways.</li>
-                        <li><strong>Scalable Pipeline Orchestration:</strong> Engineered automated NGS pipelines (scRNA-seq, Spatial, ATAC-seq) on AWS cloud and SLURM HPC clusters using Nextflow and Snakemake, reducing lead times by 27%.</li>
-                        <li class="bg-blue-50/50 p-2 rounded-lg -ml-2"><strong>Agentic Coding & Engineering Productivity:</strong> Integrated autonomous AI coding agents and context-aware LLM CLI tooling into workflows, accelerating Nextflow pipeline scaffolding, test suite generation (pytest), and data transformation scripts by over 40%.</li>
-                        <li><strong>Generative AI & Agentic RAG Workflows:</strong> Trained GANs (WGAN-GP) and deployed agentic RAG workflows to automate preclinical research synthesis and metadata indexing.</li>
-                    </ul>
+                    <p class="text-lg font-medium text-accent-cyan mb-4">Boehringer Ingelheim <span class="font-normal text-sm text-slate-500">| Ridgefield, CT (Remote)</span></p>
+                    <div class="glass-panel p-6 rounded-2xl text-slate-300">
+                        <ul class="list-disc list-outside ml-4 space-y-3 marker:text-accent-teal">
+                            <li><strong>Spatial Biology & Deep Learning Pipelines:</strong> Architected PyTorch image analysis, spatial transcriptomics (10x Visium), and multiplexed spatial proteomics pipelines for high-resolution phenotypic feature extraction.</li>
+                            <li><strong>Single-Cell Atlas Construction:</strong> Built harmonized scRNA-seq and multi-omics single-cell atlases utilizing high-dimensional clustering and latent space representations.</li>
+                            <li><strong>Scalable Pipeline Orchestration:</strong> Engineered automated NGS pipelines (scRNA-seq, Spatial, ATAC-seq) on AWS cloud and SLURM HPC clusters using Nextflow and Snakemake.</li>
+                            <li><strong class="text-accent-teal">Agentic Coding & Engineering Productivity:</strong> Integrated autonomous AI coding agents and context-aware LLM CLI tooling into workflows, accelerating Nextflow pipeline scaffolding and data scripts by over 40%.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Experience 2 -->
-                <div class="relative pl-8 md:pl-10 timeline-dot">
+                <div class="relative pl-10 md:pl-12 timeline-item reveal delay-100">
+                    <div class="timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                        <h3 class="text-2xl font-bold text-navy-900">Data Analyst (Computational Bioprocess)</h3>
-                        <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">June 2019 – May 2020</span>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-accent-teal transition-colors">Data Analyst</h3>
+                        <span class="text-sm font-semibold text-slate-300 bg-dark-700 border border-slate-600 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">June 2019 – May 2020</span>
                     </div>
-                    <p class="text-lg font-medium text-slate-600 mb-4">DSM Nutritional Products <span class="font-normal text-sm text-slate-400">| Columbia, MD</span></p>
-                    <ul class="list-disc list-inside text-slate-700 space-y-2 marker:text-navy-800">
-                        <li><strong>Computational Bioprocess Optimization:</strong> Engineered predictive time-series models (ARIMA, Prophet) to monitor real-time industrial fermentation parameters, driving a 3% increase in annual product yield.</li>
-                        <li><strong>Bayesian Biostatistics:</strong> Executed Bayesian statistical models, hypothesis testing, and A/B evaluations to benchmark multi-factor batch performance.</li>
-                        <li>Built automated Python/SQL data pipelines and interactive Tableau/Looker dashboards for metabolic flux insights.</li>
-                    </ul>
+                    <p class="text-lg font-medium text-accent-cyan mb-4">DSM Nutritional Products <span class="font-normal text-sm text-slate-500">| Columbia, MD</span></p>
+                    <div class="glass-panel p-6 rounded-2xl text-slate-300">
+                        <ul class="list-disc list-outside ml-4 space-y-3 marker:text-slate-500">
+                            <li>Engineered predictive time-series models (ARIMA, Prophet) to monitor real-time industrial fermentation parameters, driving a 3% increase in annual product yield.</li>
+                            <li>Executed Bayesian statistical models, hypothesis testing, and A/B evaluations to benchmark batch performance.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Experience 3 -->
-                <div class="relative pl-8 md:pl-10 timeline-dot">
+                <div class="relative pl-10 md:pl-12 timeline-item reveal delay-200">
+                    <div class="timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                        <h3 class="text-2xl font-bold text-navy-900">Data Science Teaching Assistant</h3>
-                        <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">August 2019 – May 2020</span>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-accent-teal transition-colors">Data Science Teaching Assistant</h3>
+                        <span class="text-sm font-semibold text-slate-300 bg-dark-700 border border-slate-600 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">August 2019 – May 2020</span>
                     </div>
-                    <p class="text-lg font-medium text-slate-600 mb-4">University of Maryland, Baltimore County (UMBC) <span class="font-normal text-sm text-slate-400">| Baltimore, MD</span></p>
-                    <ul class="list-disc list-inside text-slate-700 space-y-2 marker:text-navy-800">
-                        <li>Led supplemental instruction sessions, hands-on Python/R coding labs, and technical mentorship in statistical modeling and machine learning.</li>
-                        <li>Evaluated assignments and conducted code reviews covering ML pipelines and software engineering principles.</li>
-                    </ul>
+                    <p class="text-lg font-medium text-accent-cyan mb-4">UMBC <span class="font-normal text-sm text-slate-500">| Baltimore, MD</span></p>
+                    <div class="glass-panel p-6 rounded-2xl text-slate-300">
+                        <ul class="list-disc list-outside ml-4 space-y-3 marker:text-slate-500">
+                            <li>Led supplemental instruction sessions, Python/R coding labs, and technical mentorship in statistical modeling and machine learning.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Experience 4 -->
-                <div class="relative pl-8 md:pl-10 timeline-dot">
+                <div class="relative pl-10 md:pl-12 timeline-item reveal delay-300">
+                    <div class="timeline-dot"></div>
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-2">
-                        <h3 class="text-2xl font-bold text-navy-900">Data Engineer</h3>
-                        <span class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">June 2016 – July 2017</span>
+                        <h3 class="text-2xl font-bold text-white group-hover:text-accent-teal transition-colors">Data Engineer</h3>
+                        <span class="text-sm font-semibold text-slate-300 bg-dark-700 border border-slate-600 px-3 py-1 rounded-full whitespace-nowrap mt-2 sm:mt-0">June 2016 – July 2017</span>
                     </div>
-                    <p class="text-lg font-medium text-slate-600 mb-4">Soft Data Solutions <span class="font-normal text-sm text-slate-400">| India</span></p>
-                    <ul class="list-disc list-inside text-slate-700 space-y-2 marker:text-navy-800">
-                        <li>Designed relational SQL database schemas with redundancy-reduction protocols, boosting query retrieval efficiency by 35%.</li>
-                        <li>Implemented automated data cleaning and validation suites, sustaining 99.9% data integrity.</li>
-                    </ul>
+                    <p class="text-lg font-medium text-accent-cyan mb-4">Soft Data Solutions <span class="font-normal text-sm text-slate-500">| India</span></p>
+                    <div class="glass-panel p-6 rounded-2xl text-slate-300">
+                        <ul class="list-disc list-outside ml-4 space-y-3 marker:text-slate-500">
+                            <li>Designed relational SQL schemas with redundancy-reduction protocols, boosting query retrieval efficiency by 35%.</li>
+                            <li>Implemented automated data cleaning and validation suites, sustaining 99.9% data integrity.</li>
+                        </ul>
+                    </div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- Publications Section -->
-    <section id="publications" class="py-20 bg-slate-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-navy-900 mb-12 flex items-center">
-                <span class="w-8 h-1 bg-navy-900 mr-4 rounded-full"></span> Selected Publications
-            </h2>
+    <!-- Publications & Education Section (Grid Layout) -->
+    <section id="publications" class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
             
-            <div class="bg-white border border-slate-200 p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow relative overflow-hidden group">
-                <!-- Decorative accent -->
-                <div class="absolute top-0 left-0 w-2 h-full bg-navy-900 group-hover:bg-blue-500 transition-colors"></div>
+            <!-- Publications -->
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 flex items-center reveal">
+                    <span class="w-12 h-1 bg-accent-purple mr-6 rounded-full"></span> 
+                    Publications
+                </h2>
                 
-                <h3 class="text-xl font-bold text-navy-900 mb-2 pr-8">
-                    In-silico Generation of Medicine-Like Antibodies Using Generative Adversarial Networks
-                </h3>
-                <p class="text-slate-500 font-medium mb-4 italic">
-                    Briefings in Bioinformatics (2025)
-                </p>
-                <p class="text-slate-700 mb-6 leading-relaxed">
-                    Built an end-to-end deep learning bioinformatics pipeline in Keras and TensorFlow trained on massive genomic datasets to automate therapeutic antibody library design. Integrated structural bioinformatics and physicochemical scoring to optimize CDR loop conformations, reducing the experimental screening search space for viable therapeutic candidates by 40%.
-                </p>
-                <a href="#" class="inline-flex items-center text-sm font-bold text-navy-800 hover:text-blue-600 transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                    View Publication (DOI)
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education" class="py-20 bg-white border-t border-slate-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-navy-900 mb-12 flex items-center">
-                <span class="w-8 h-1 bg-navy-900 mr-4 rounded-full"></span> Education
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Degree 1 -->
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                    <div class="text-navy-900 flex justify-between items-start mb-2">
-                        <h3 class="text-xl font-bold">M.S. in Data Science</h3>
+                <div class="glass-panel p-8 rounded-3xl border-t border-accent-purple/30 hover:border-accent-purple transition-all duration-500 group reveal">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white leading-tight">
+                            In-silico Generation of Medicine-Like Antibodies Using Generative Adversarial Networks
+                        </h3>
                     </div>
-                    <p class="text-lg text-slate-700 font-medium mb-1">University of Maryland, Baltimore County (UMBC)</p>
-                    <p class="text-slate-500 text-sm font-medium">August 2018 – August 2020</p>
-                </div>
-
-                <!-- Degree 2 -->
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                    <div class="text-navy-900 flex justify-between items-start mb-2">
-                        <h3 class="text-xl font-bold">B.S. in Biotechnology & Computer Science</h3>
-                    </div>
-                    <p class="text-lg text-slate-700 font-medium mb-1">Devi Ahilya Vishwavidyalaya, India</p>
-                    <p class="text-slate-500 text-sm font-medium">August 2014 – May 2017</p>
+                    <p class="text-accent-purple font-medium mb-6 text-sm tracking-wide">
+                        Briefings in Bioinformatics (Jan 2025)
+                    </p>
+                    <p class="text-slate-400 mb-8 leading-relaxed text-sm">
+                        Built an end-to-end deep learning bioinformatics pipeline in Keras and TensorFlow trained on massive genomic datasets to automate therapeutic antibody library design. Integrated structural bioinformatics and physicochemical scoring to optimize CDR loop conformations, reducing the experimental screening search space by 40%.
+                    </p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-white bg-dark-700/50 hover:bg-accent-purple hover:text-white px-5 py-2.5 rounded-full border border-slate-700 hover:border-accent-purple transition-all">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        View Publication (DOI)
+                    </a>
                 </div>
             </div>
+
+            <!-- Education -->
+            <div id="education">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 flex items-center reveal">
+                    <span class="w-12 h-1 bg-accent-cyan mr-6 rounded-full"></span> 
+                    Education
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Degree 1 -->
+                    <div class="glass-panel p-8 rounded-3xl border-l-4 border-l-accent-cyan hover:bg-white/5 transition-colors reveal delay-100">
+                        <h3 class="text-xl font-bold text-white mb-2">M.S. in Data Science</h3>
+                        <p class="text-accent-cyan font-medium mb-2">University of Maryland, Baltimore County (UMBC)</p>
+                        <p class="text-slate-500 text-sm font-medium">2018 – 2020</p>
+                    </div>
+
+                    <!-- Degree 2 -->
+                    <div class="glass-panel p-8 rounded-3xl border-l-4 border-l-slate-600 hover:border-l-accent-teal hover:bg-white/5 transition-colors reveal delay-200">
+                        <h3 class="text-xl font-bold text-white mb-2">B.S. in Biotechnology & Computer Science</h3>
+                        <p class="text-slate-300 font-medium mb-2">Devi Ahilya Vishwavidyalaya, India</p>
+                        <p class="text-slate-500 text-sm font-medium">2014 – 2017</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-navy-900 text-white py-12">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <p class="text-lg font-bold">Udit Choudhary</p>
-                <p class="text-blue-200 text-sm">Bioinformatics Developer & Senior Data Scientist</p>
+    <footer class="border-t border-white/5 bg-dark-900 pt-16 pb-8 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center reveal">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <p class="text-xl font-extrabold text-white tracking-tight">Udit Choudhary</p>
+                <p class="text-accent-teal text-sm font-medium mt-1">Bioinformatics Developer & Data Scientist</p>
             </div>
             <div class="flex space-x-6">
-                <a href="mailto:choudhary.udit@outlook.com" class="text-blue-200 hover:text-white transition-colors">Email</a>
-                <a href="https://github.com/udcruze24" target="_blank" class="text-blue-200 hover:text-white transition-colors">GitHub</a>
-                <a href="#" class="text-blue-200 hover:text-white transition-colors">LinkedIn</a>
+                <a href="mailto:choudhary.udit@outlook.com" class="text-slate-400 hover:text-accent-teal transition-colors">Email</a>
+                <a href="https://github.com/udcruze24" target="_blank" class="text-slate-400 hover:text-white transition-colors">GitHub</a>
+                <a href="https://linkedin.com/in/udit-choudhary" class="text-slate-400 hover:text-accent-purple transition-colors">LinkedIn</a>
             </div>
         </div>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 text-center text-blue-400 text-sm">
-            &copy; 2026 Udit Choudhary. All rights reserved. Built for GitHub Pages.
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 text-center text-slate-600 text-xs font-medium uppercase tracking-widest reveal delay-100">
+            &copy; 2026 Udit Choudhary. Built for GitHub Pages.
         </div>
     </footer>
 
-    <!-- Mobile Menu Script -->
+    <!-- Interactive Scripts -->
     <script>
+        // 1. Mobile Menu Toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            var menu = document.getElementById('mobile-menu');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-            } else {
-                menu.classList.add('hidden');
-            }
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         });
-
-        // Close mobile menu on link click
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.add('hidden');
             });
         });
+
+        // 2. Intersection Observer for Scroll Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3. Particle Network Canvas Background
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles;
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            // Responsive particle count
+            const particleCount = Math.min(Math.floor(window.innerWidth / 15), 100); 
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 1,
+                    vy: (Math.random() - 0.5) * 1,
+                    radius: Math.random() * 1.5 + 0.5
+                });
+            }
+        }
+
+        function animateCanvas() {
+            requestAnimationFrame(animateCanvas);
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx; 
+                p.y += p.vy;
+                
+                // Bounce off edges
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+                
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(45, 212, 191, 0.4)'; // teal-400 with opacity
+                ctx.fill();
+                
+                // Draw connections
+                for (let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(34, 211, 238, ${1 - dist/120})`; // cyan-400 fading by distance
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animateCanvas();
     </script>
 </body>
 </html>
