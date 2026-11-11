@@ -54,7 +54,7 @@ Author of peer-reviewed deep learning research for therapeutic antibody library 
 
 ### 📬 Connect With Me
 
-- **Email:** [udit2400@gmail.com](mailto:choudhary.udit@outlook.com)
+- **Email:** [choudhary.udit@outlook.com](mailto:choudhary.udit@outlook.com)
 - **LinkedIn:** [linkedin.com/in/udit](http://www.linkedin.com/in/udit)
 - **Publication:** [Briefings in Bioinformatics (2025) DOI: 10.1093/bib/bbaf023](https://doi.org/10.1093/bib/bbaf023)
 
